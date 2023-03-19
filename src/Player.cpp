@@ -10,11 +10,12 @@ Player::Player(std::string name, float bullseyeChance, float normalHitChance, in
 
 Player::~Player()
 {
+
 }
 
 int Player::hit(int target)	//Handles the player hitting a specific target, deals with score going below 50
 {
-	std::cout << name <<" hits " << target << '\n';
+	//std::cout << name <<" hits " << target << '\n';
 	if (score - target == 0) //Must have hit a bullseye
 	{ 
 		bullseyeCount++;
@@ -22,7 +23,7 @@ int Player::hit(int target)	//Handles the player hitting a specific target, deal
 	}
 	if (score - target < dartBoard->getBullseyeValue()) //Non-bullseye takes it below 50, invalid and disregarded
 	{
-		std::cout << "Cannot go below "<< dartBoard->getBullseyeValue()<<", must end on a bullseye\n";
+		//std::cout << "Cannot go below "<< dartBoard->getBullseyeValue()<<", must end on a bullseye\n";
 		return score;
 	}	
 	return score -= target;
