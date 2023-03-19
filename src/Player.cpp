@@ -1,8 +1,9 @@
 #include "Player.h"
 
-Player::Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore)
+//Beautiful initialiser list
+Player::Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard* dartBoard)
 	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance }, score{ startingScore }, bullseyeCount{ 0 },
-	rand{ static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()) }	//Beautiful initialiser list
+	rand{ static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()) }, dartBoard{dartBoard}	
 {
 
 }
@@ -13,14 +14,15 @@ Player::~Player()
 
 int Player::hit(int target)	//Handles the player hitting a specific target, deals with score going below 50
 {
+	std::cout << "Targetted " << target << '\n';
 	if (score - target == 0) //Must have hit a bullseye
 	{ 
 		bullseyeCount++;
 		return score -= target; //Subtracts the target from the score, (will always be 0), then returns that 0
 	}
-	if (score - target < 50) //Non-bullseye takes it below 50, invalid and disregarded
+	if (score - target < dartBoard->getBullseyeValue()) //Non-bullseye takes it below 50, invalid and disregarded
 	{
-		std::cout << "Cannot go below 50, must end on a bullseye\n";
+		std::cout << "Cannot go below "<< dartBoard->getBullseyeValue()<<", must end on a bullseye\n";
 		return score;
 	}	
 	return score -= target;
@@ -28,11 +30,12 @@ int Player::hit(int target)	//Handles the player hitting a specific target, deal
 
 bool Player::throwDart(int target)
 {
+	if (dartBoard == nullptr) { return false; }	//If there isn't a dartboard, stop player from throwing a dart at the wall and causing memory issues
 	constexpr int targets[20] = { 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5 };
 
 	float aim = static_cast<float>(rand()) / rand.max();	//generate a random float between 0 and 1, for checking if they hit the intended targer
 
-	if (target==50)
+	if (target==dartBoard->getBullseyeValue())
 	{
 		if (aim > bullseyeChance)	//If the player misses, change what their target is
 		{

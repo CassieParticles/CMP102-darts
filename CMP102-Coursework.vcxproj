@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Dartboard.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Dartboard.h" />
     <ClInclude Include="src\Player.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

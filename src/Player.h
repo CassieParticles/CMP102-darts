@@ -4,6 +4,8 @@
 #include <random>
 #include <chrono>
 
+#include "Dartboard.h"
+
 class Player
 {
 private:
@@ -15,9 +17,11 @@ private:
 
 	std::mt19937 rand;	//Mersenne twister, for random number generation
 
+	Dartboard* dartBoard;	//The dartboard players are throwing at
+
 	int hit(int target);	//Function for hitting a specific number, includes checks for going below 50
 public:
-	Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore);
+	Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard* board);
 	~Player();
 	bool throwDart(int target);
 
