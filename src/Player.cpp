@@ -63,10 +63,7 @@ bool Player::throwDart(int target)
 		int change = rand() % 2;	//0 means the index before, 1 means the index after
 		if (change == 0) { change--; }
 
-		index += change;					//Add the change to the index, and make sure to wrap the index so it's in the range of the targets
-		if (index < 0) { index += 20; }	
-		if (index > 19) { index -= 20; }
-		target = targets[index];
+		target = dartBoard->getValue(index + change);	//Get the place the player hits, allowing it to wrap around in the funnction
 	}
 
 	hit(target);
