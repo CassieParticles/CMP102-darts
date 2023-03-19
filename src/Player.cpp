@@ -14,7 +14,7 @@ Player::~Player()
 
 int Player::hit(int target)	//Handles the player hitting a specific target, deals with score going below 50
 {
-	std::cout << "Targetted " << target << '\n';
+	std::cout << name <<" hits " << target << '\n';
 	if (score - target == 0) //Must have hit a bullseye
 	{ 
 		bullseyeCount++;
@@ -31,7 +31,6 @@ int Player::hit(int target)	//Handles the player hitting a specific target, deal
 bool Player::throwDart(int target)
 {
 	if (dartBoard == nullptr) { return false; }	//If there isn't a dartboard, stop player from throwing a dart at the wall and causing memory issues
-	constexpr int targets[20] = { 20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5 };
 
 	float aim = static_cast<float>(rand()) / rand.max();	//generate a random float between 0 and 1, for checking if they hit the intended targer
 
@@ -49,16 +48,7 @@ bool Player::throwDart(int target)
 
 	if (aim > normalHitChance) //If they player misses, change their target
 	{
-		int index=-1;	//Invalid index, to make sure it finds the right index
-		for (int i = 0; i < 20; i++)
-		{
-			if (targets[i] == target) 
-			{
-				index = i;
-				break;
-			}
-		}
-		if (index == -1) { return false; }	//This shouldn't happen, but better to be safe then sorry
+		int index = dartBoard->getIndex(target);
 
 		int change = rand() % 2;	//0 means the index before, 1 means the index after
 		if (change == 0) { change--; }

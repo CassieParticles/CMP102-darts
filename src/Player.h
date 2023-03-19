@@ -26,5 +26,6 @@ public:
 	bool throwDart(int target);
 
 	int getScore() { return score; }	//Simple getter can be defined in header file, to reduce clutter in main source file
+	const std::string& getName() { return name; }
 };
 

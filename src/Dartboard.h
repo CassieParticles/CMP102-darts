@@ -7,6 +7,7 @@ private:
 public:
 	Dartboard(int bullseyeValue);
 	~Dartboard();
+	int getIndex(int value);
 	int getValue(int index);
 	int getBullseyeValue() { return bullseyeValue; }
 };
