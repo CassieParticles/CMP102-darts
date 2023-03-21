@@ -1,19 +1,19 @@
-#include "Player.h"
+#include "Player301.h"
 
 //Beautiful initialiser list
-Player::Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard* dartBoard)
+Player301::Player301(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard301* dartBoard)
 	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance }, score{ startingScore }, bullseyeCount{ 0 },
 	rand{ static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()) }, dartBoard{dartBoard}	
 {
 
 }
 
-Player::~Player()
+Player301::~Player301()
 {
 
 }
 
-int Player::hit(int target, int mult)	//Handles the player hitting a specific target, deals with score going below 50
+int Player301::hit(int target)	//Handles the player hitting a specific target, deals with score going below 50
 {
 	//std::cout << name <<" hits " << target << '\n';
 	if (score - target == 0) //Must have hit a bullseye
@@ -29,7 +29,7 @@ int Player::hit(int target, int mult)	//Handles the player hitting a specific ta
 	return score -= target;
 }
 
-bool Player::throwDart(int target)
+bool Player301::throwDart(int target)
 {
 	if (dartBoard == nullptr) { return false; }	//If there isn't a dartboard, stop player from throwing a dart at the wall and causing memory issues
 

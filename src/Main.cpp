@@ -2,8 +2,8 @@
 #include <random>
 #include <chrono>
 
-#include "Player.h"
-#include "Dartboard.h"
+#include "301Classes/Player301.h"
+#include "301Classes/Dartboard301.h"
 
 constexpr int startingScore = 301;
 
@@ -35,23 +35,26 @@ int playGame501(char playerFirst)
 				If the score is 0, the player wins
 			Returns boolean for if that player has won (final score is 0)
 	Once they reach 180, first 2 throws are trying to score to aim towards multiples of 2, or 25/50 (pick randomly)
-		First throw matters less, aiming to get within 20 of the outer/inner bull
+		In the 60-180 range, still aiming high as you can
+		First throw matters less, aiming to get within 20 of the outer/inner bull is better
 		Second throw sees if it can get to 50/25, if not, aims for odd/even depending on if their score is odd or even
 			If score-50 is achievable (<20, <40 & multiple of 2, <60 & multiple of 3), then 50 can be reached
 			If score-25 is achievable (<20, <40 & multiple of 2, <60 & multiple of 3), then 25 can be reached
+		Third throw should be attempting to win, if possible
 	Avoid ending up below 10, if they are below 10 on their final dart, aim high to discount set
 		Aiming for single 14 is best, all neighbors are 9 or more, so guarenteed to revert
 	*/
+	return 0;
 }
 
 int playGame301(char playerFirst)
 {
 	Dartboard board{ 50 };
 
-	Player Joe{ "Joe", 0.71f,0.8f,startingScore,&board };
-	Player Sid{ "Sid",0.73f,0.8f,startingScore,&board };
+	Player301 Joe{ "Joe", 0.71f,0.8f,startingScore,&board };
+	Player301 Sid{ "Sid",0.73f,0.8f,startingScore,&board };
 
-	Player* playerOrder[2];
+	Player301* playerOrder[2];
 	int turnsEach[2]{};
 
 	if (playerFirst == 'S')
