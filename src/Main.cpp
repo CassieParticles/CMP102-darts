@@ -86,11 +86,11 @@ int playGame501(char playerFirst)
 				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
 				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 99999999999999; }
 
-				if (innerBullseyeDiff < 20)
+				if (innerBullseyeDiff < 40)
 				{
 					currentPlayer->throwDart({ innerBullseyeDiff,1 });
 				}
-				else if (outerBullseyeDiff < 20)
+				else if (outerBullseyeDiff < 40)
 				{
 					currentPlayer->throwDart({ outerBullseyeDiff,1 });
 				}
@@ -101,11 +101,7 @@ int playGame501(char playerFirst)
 			}
 			if (i == 1)	//2nd dart, try to get score to a point where the player can checkout (bullseye first, then double)
 			{
-				if (currentPlayer->getScore() > 110)	//Cannot get to checkout point
-				{
-					currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
-					continue;
-				}
+
 				//Check the bullseye
 				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
 				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
@@ -113,7 +109,12 @@ int playGame501(char playerFirst)
 				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
 				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 99999999999999; }
 
-				if (innerBullseyeDiff < 20) { currentPlayer->throwDart({ innerBullseyeDiff,1 }); }	//If player can get to checkout with single, do so
+
+				if (currentPlayer->getScore() > 110)	//Cannot get to checkout point
+				{
+					currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
+				}
+				else if (innerBullseyeDiff < 20) { currentPlayer->throwDart({ innerBullseyeDiff,1 }); }	//If player can get to checkout with single, do so
 				else if (outerBullseyeDiff < 20) { currentPlayer->throwDart({ outerBullseyeDiff,1 }); }
 
 				else if (innerBullseyeDiff == board.getInnerBullseye() || outerBullseyeDiff == board.getInnerBullseye())	//Inner bullseye will lead to bullseye checkout
@@ -169,9 +170,15 @@ int playGame501(char playerFirst)
 				}
 			}
 		}
-		currentPlayer->endTurn();
+		bool playerWon=currentPlayer->endTurn();	//Once 3 darts are thrown, end turn, 
+		cPlayerIndex = 1 - cPlayerIndex;
+		if (playerWon)
+		{
+			std::cout << "Player " << currentPlayer->getName() << " has won!";
+			break;
+		}
+		std::cout << "Player " << currentPlayer->getName() << " ended turn with score " << currentPlayer->getScore()<<"\n\n";
 	}
-
 	return 0;
 }
 
