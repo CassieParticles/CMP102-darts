@@ -9,7 +9,7 @@ constexpr int startingScore = 301;
 
 int wins[2]{};
 
-int playGame(char playerFirst)
+int playGame301(char playerFirst)
 {
 	Dartboard board{ 50 };
 
@@ -78,7 +78,7 @@ int main()
 
 	for (games;games < sampleSize; games++)
 	{
-		sumTurns += playGame(playerFirst);
+		sumTurns += playGame301(playerFirst);
 	}
 	std::cout << "Mean number of turns in a game: " << sumTurns / games<<'\n';	//Get mean number of turns per game
 	std::cout << "First player won " << wins[0] << " times!" << '\n';
