@@ -83,22 +83,29 @@ int playGame501(char playerFirst)
 				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
 				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
 
-				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
-				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 99999999999999; }
+				if (innerBullseyeDiff <= 1) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
+				if (outerBullseyeDiff <= 1) { outerBullseyeDiff = 99999999999999; }
+
+				if (currentPlayer->getScore() < 10)
+				{
+					currentPlayer->throwDart({ 1,1 });
+				}
 
 				if (innerBullseyeDiff < 40)
 				{
-					currentPlayer->throwDart({ innerBullseyeDiff,1 });
+					currentPlayer->throwDart({ innerBullseyeDiff-1,1 });
 				}
 				else if (outerBullseyeDiff < 40)
 				{
-					currentPlayer->throwDart({ outerBullseyeDiff,1 });
+					currentPlayer->throwDart({ outerBullseyeDiff-1,1 });
 				}
 				else
 				{
 					currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
 				}
+				std::cout << "First throw\n";
 			}
+			
 			if (i == 1)	//2nd dart, try to get score to a point where the player can checkout (bullseye first, then double)
 			{
 
@@ -106,8 +113,8 @@ int playGame501(char playerFirst)
 				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
 				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
 
-				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
-				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 99999999999999; }
+				if (innerBullseyeDiff <= 0) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
+				if (outerBullseyeDiff <= 0) { outerBullseyeDiff = 1000; }
 
 
 				if (currentPlayer->getScore() > 110)	//Cannot get to checkout point
@@ -141,7 +148,10 @@ int playGame501(char playerFirst)
 				{
 					currentPlayer->throwDart({ 20,3 });	//Aim to get score down faster
 				}
+				std::cout << "Second throw\n";
 			}
+			
+			int playerScore = currentPlayer->getScore();
 			if (i == 2)	//3rd dart, keep score above 10, checkout if so and possible
 			{
 				if (currentPlayer->getScore() < 10)	//prevent score from going below 10
@@ -168,7 +178,9 @@ int playGame501(char playerFirst)
 				{
 					currentPlayer->throwDart({ 14,1 });	//Middle score, reducing score, but not 
 				}
+				std::cout << "Third throw\n";
 			}
+			
 		}
 		bool playerWon=currentPlayer->endTurn();	//Once 3 darts are thrown, end turn, 
 		cPlayerIndex = 1 - cPlayerIndex;
