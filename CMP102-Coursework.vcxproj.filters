@@ -18,30 +18,30 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\301Classes\Player.cpp">
+    <ClCompile Include="src\301Classes\Player301.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\301Classes\Dartboard.cpp">
+    <ClCompile Include="src\301Classes\Dartboard301.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\501Classes\Dartboard.cpp">
+    <ClCompile Include="src\501Classes\Dartboard501.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\501Classes\Player.cpp">
+    <ClCompile Include="src\501Classes\Player501.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\301Classes\Player.h">
+    <ClInclude Include="src\301Classes\Player301.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\301Classes\Dartboard.h">
+    <ClInclude Include="src\301Classes\Dartboard301.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\501Classes\Player.h">
+    <ClInclude Include="src\501Classes\Player501.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\501Classes\Dartboard.h">
+    <ClInclude Include="src\501Classes\Dartboard501.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

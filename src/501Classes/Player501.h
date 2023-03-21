@@ -15,16 +15,22 @@ public:
 		int mult;
 	};
 
-	Player501(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard501* board);
+	Player501(std::string name, float bullseyeChance, float normalHitChance, float singleHitChance,float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* board);
 	~Player501();
-	bool throwDart(int target);
+	int throwDart(Target target);
 
 	int getScore() { return currentScore; }	//Simple getter can be defined in header file, to reduce clutter in main source file
 	const std::string& getName() { return name; }
 private:
 	std::string name;
-	float bullseyeChance;
+
+	float bullseyeChance;	//Sector
 	float normalHitChance;
+
+	float singleHitChance;	//Multipliers
+	float doubleHitChance;
+	float tripleHitChance;
+
 	int bullseyeCount;
 
 	int currentScore;
@@ -35,5 +41,6 @@ private:
 	Dartboard501* dartBoard;	//The dartboard players are throwing at
 
 	int hit(Target target);	//Function for hitting a specific number, includes checks for going below 50
+	
 };
 

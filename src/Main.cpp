@@ -5,6 +5,9 @@
 #include "301Classes/Player301.h"
 #include "301Classes/Dartboard301.h"
 
+#include "501Classes/Player501.h"
+#include "501Classes/Dartboard501.h"
+
 constexpr int startingScore = 301;
 
 int wins[2]{};
@@ -44,12 +47,18 @@ int playGame501(char playerFirst)
 	Avoid ending up below 10, if they are below 10 on their final dart, aim high to discount set
 		Aiming for single 14 is best, all neighbors are 9 or more, so guarenteed to revert
 	*/
+	Dartboard501 testBoard{ 50,25 };
+	Player501 testPlayer{ "Tess",.73f,.8f,.4f,.3f,0.3f,501,&testBoard };
+	Player501::Target target{ 50,2 };
+	
+	std::cout<<"New score: "<<testPlayer.throwDart(target)<<'\n';
+
 	return 0;
 }
 
 int playGame301(char playerFirst)
 {
-	Dartboard board{ 50 };
+	Dartboard301 board{ 50 };
 
 	Player301 Joe{ "Joe", 0.71f,0.8f,startingScore,&board };
 	Player301 Sid{ "Sid",0.73f,0.8f,startingScore,&board };
@@ -112,14 +121,16 @@ int main()
 	int sumTurns{};
 	int games{};
 
-	constexpr int sampleSize = 100000;
+	//constexpr int sampleSize = 100000;
 
-	for (games;games < sampleSize; games++)
-	{
-		sumTurns += playGame301(playerFirst);
-	}
-	std::cout << "Mean number of turns in a game: " << sumTurns / games<<'\n';	//Get mean number of turns per game
-	std::cout << "First player won " << wins[0] << " times!" << '\n';
-	std::cout << "Second player won " << wins[1] << " times!" << '\n';
+	//for (games;games < sampleSize; games++)
+	//{
+	//	sumTurns += playGame301(playerFirst);
+	//}
+	//std::cout << "Mean number of turns in a game: " << sumTurns / games<<'\n';	//Get mean number of turns per game
+	//std::cout << "First player won " << wins[0] << " times!" << '\n';
+	//std::cout << "Second player won " << wins[1] << " times!" << '\n';
+
+	playGame501(playerFirst);
 	
 }

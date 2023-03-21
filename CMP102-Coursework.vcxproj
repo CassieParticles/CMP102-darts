@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\301Classes\Dartboard.cpp" />
-    <ClCompile Include="src\301Classes\Player.cpp" />
-    <ClCompile Include="src\501Classes\Dartboard.cpp" />
-    <ClCompile Include="src\501Classes\Player.cpp" />
+    <ClCompile Include="src\301Classes\Dartboard301.cpp" />
+    <ClCompile Include="src\301Classes\Player301.cpp" />
+    <ClCompile Include="src\501Classes\Dartboard501.cpp" />
+    <ClCompile Include="src\501Classes\Player501.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\301Classes\Dartboard.h" />
-    <ClInclude Include="src\301Classes\Player.h" />
-    <ClInclude Include="src\501Classes\Dartboard.h" />
-    <ClInclude Include="src\501Classes\Player.h" />
+    <ClInclude Include="src\301Classes\Dartboard301.h" />
+    <ClInclude Include="src\301Classes\Player301.h" />
+    <ClInclude Include="src\501Classes\Dartboard501.h" />
+    <ClInclude Include="src\501Classes\Player501.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
