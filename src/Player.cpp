@@ -13,7 +13,7 @@ Player::~Player()
 
 }
 
-int Player::hit(int target)	//Handles the player hitting a specific target, deals with score going below 50
+int Player::hit(int target, int mult)	//Handles the player hitting a specific target, deals with score going below 50
 {
 	//std::cout << name <<" hits " << target << '\n';
 	if (score - target == 0) //Must have hit a bullseye

@@ -9,6 +9,41 @@ constexpr int startingScore = 301;
 
 int wins[2]{};
 
+int playGame501(char playerFirst)
+{
+	/*
+	Alternate between each player
+
+	Player throws 3 darts, trying to get as low as they can (3 treble 20s), until they reach 180
+		Have oldScore stored in Player class
+		Throw 1 dart
+			Create struct Target, containing the section they are aiming at, and the multiplier they are aiming at (double or treble)
+			new Throw function takes in a Target argument, uses rng to randomise if they hit, and if they hit the double/treble
+				Use prior random calcualtion for if they hit left or right of target
+				Use second random number generated for if they hit the single/double/treble
+					If they aimed for single, use hingle hit chance to determine if they do (very hgih chance of succes)
+						If they don't pick double or treble randomly (equal chance)
+					If they aimed for double/treble, use respective chances to determine if they do (lower chance of success)
+						If they don't, they hit single (double and treble are too far away to accidentally hit the other)
+				Use random to modify the Target parameter passed in, then use new Hit function, that can also hit the new target
+				Return new score
+		Use new score to find good next target
+		End of 3 darts being thrown, add a EndTurn function
+			checks if the new score is below 0, or a value that can't end on a double, (1,2,3)
+				If it is, it sets the currentScore to the oldScore (reverts it)
+				If it isn't, it sets the oldScore to the currentScore (commits it)
+				If the score is 0, the player wins
+			Returns boolean for if that player has won (final score is 0)
+	Once they reach 180, first 2 throws are trying to score to aim towards multiples of 2, or 25/50 (pick randomly)
+		First throw matters less, aiming to get within 20 of the outer/inner bull
+		Second throw sees if it can get to 50/25, if not, aims for odd/even depending on if their score is odd or even
+			If score-50 is achievable (<20, <40 & multiple of 2, <60 & multiple of 3), then 50 can be reached
+			If score-25 is achievable (<20, <40 & multiple of 2, <60 & multiple of 3), then 25 can be reached
+	Avoid ending up below 10, if they are below 10 on their final dart, aim high to discount set
+		Aiming for single 14 is best, all neighbors are 9 or more, so guarenteed to revert
+	*/
+}
+
 int playGame301(char playerFirst)
 {
 	Dartboard board{ 50 };

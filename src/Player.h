@@ -19,7 +19,7 @@ private:
 
 	Dartboard* dartBoard;	//The dartboard players are throwing at
 
-	int hit(int target);	//Function for hitting a specific number, includes checks for going below 50
+	int hit(int target, int mult);	//Function for hitting a specific number, includes checks for going below 50
 public:
 	Player(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard* board);
 	~Player();
