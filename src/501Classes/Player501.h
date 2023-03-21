@@ -21,6 +21,8 @@ public:
 
 	int getScore() { return currentScore; }	//Simple getter can be defined in header file, to reduce clutter in main source file
 	const std::string& getName() { return name; }
+
+	bool endTurn();		//Run at the end of someone's 3 throws, checks if their score is valid, returns if they've won
 private:
 	std::string name;
 
