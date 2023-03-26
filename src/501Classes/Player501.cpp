@@ -46,7 +46,15 @@ int Player501::throwDart(Target target)
 		return hit(target);
 	}
 	//Target is 1-20
-	if (target.sector < 1 || target.sector>20) { return -1; }	//Quit aiming at the wall
+	if (target.sector == 0)
+	{
+		std::cout << "Player " << name << " dropped their dart to score 0, smart move!\n";
+		return currentScore;
+	}
+	if (target.sector < 0 || target.sector>20) 
+	{
+		return -1; 
+	}	//Quit aiming at the wall
 
 	//Player hitting a different sector, basically same as 301
 	if (sectorAim > normalHitChance)	//Hits to left or right

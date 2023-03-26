@@ -49,8 +49,61 @@ int playGame501(char playerFirst)
 	*/
 	Dartboard501 board{ 50,25 };
 
-	Player501 Joe{ "Joe",0.71f,0.8f,0.9f,0.4f,0.3f,501,&board };
-	Player501 Sid{ "Sid",0.73f,0.8f,0.93f,0.41f,0.31f,501,&board };
+	float bAccJoe = .71f;
+	float bAccSid = .73f;
+	float nAccJoe = .8f;
+	float nAccSid = .8f;
+	float sAccJoe = .9f;
+	float sAccSid = .93f;
+	float dAccJoe = .4f;
+	float dAccSid = 0.41f;
+	float tAccJoe = .3f;
+	float tAccSid = .31f;
+
+	int custom;
+
+	std::cout << "Do you want to use custom accuracy (1 for yes, 0 for no): ";
+	std::cin >> custom;
+
+	if (custom)	//Get all the probablilities
+	{
+		std::cout << "All probabilities are measured 0-1\n";
+
+		std::cout << "What will be Joe's bullseye accuracy: ";
+		std::cin >> bAccJoe;
+
+		std::cout << "What will be Sid's bullseye accuracy: ";
+		std::cin >> bAccSid;
+
+		std::cout << "What will be Joe's sector accuracy: ";
+		std::cin >> nAccJoe;
+		
+		std::cout << "What will be Sid's sector accuracy: ";
+		std::cin >> nAccSid;
+
+		std::cout << "What will be Joe's single accuracy: ";
+		std::cin >> sAccJoe;
+
+		std::cout << "What will be Sid's single accuracy: ";
+		std::cin >> sAccSid;
+
+		std::cout << "What will be Joe's double accuracy: ";
+		std::cin >> dAccJoe;
+
+		std::cout << "What will be Sid's double accuracy: ";
+		std::cin >> dAccSid;
+
+		std::cout << "What will be Joe's triple accuracy: ";
+		std::cin >> tAccJoe;
+
+		std::cout << "What will be Sid's triple accuracy: ";
+		std::cin >> tAccSid;
+	}
+
+	
+
+	Player501 Joe{ "Joe", bAccJoe, nAccJoe, sAccJoe, dAccJoe, tAccJoe, 501, &board };
+	Player501 Sid{ "Sid", bAccSid, nAccSid, sAccSid, dAccSid, tAccSid, 501, &board };
 
 	Player501* playerOrder[2];	//Same setting up player order as before
 	int cPlayerIndex = 0;
@@ -80,22 +133,22 @@ int playGame501(char playerFirst)
 			}
 			if (i == 0)	//1st dart, aim to get within single range of bull, if not, just aim hight
 			{
-				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
-				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
+				int innerBullseyeDiff = currentPlayer->getScore() - (board.getInnerBullseye()+20);
+				int outerBullseyeDiff = currentPlayer->getScore() - (board.getOuterBullseye()+20);
 
-				if (innerBullseyeDiff <= 1) { innerBullseyeDiff = 99999999999999; }	//If player score is less then bullseye, make the bullseye very undesirable
-				if (outerBullseyeDiff <= 1) { outerBullseyeDiff = 99999999999999; }
+				if (innerBullseyeDiff < 1) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
+				if (outerBullseyeDiff < 1) { outerBullseyeDiff = 1000; }
 
 				if (currentPlayer->getScore() < 10)
 				{
 					currentPlayer->throwDart({ 1,1 });
 				}
 
-				if (innerBullseyeDiff < 40)
+				if (innerBullseyeDiff < 20)
 				{
 					currentPlayer->throwDart({ innerBullseyeDiff-1,1 });
 				}
-				else if (outerBullseyeDiff < 40)
+				else if (outerBullseyeDiff < 20)
 				{
 					currentPlayer->throwDart({ outerBullseyeDiff-1,1 });
 				}
@@ -103,7 +156,6 @@ int playGame501(char playerFirst)
 				{
 					currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
 				}
-				std::cout << "First throw\n";
 			}
 			
 			if (i == 1)	//2nd dart, try to get score to a point where the player can checkout (bullseye first, then double)
@@ -113,8 +165,8 @@ int playGame501(char playerFirst)
 				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
 				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
 
-				if (innerBullseyeDiff <= 0) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
-				if (outerBullseyeDiff <= 0) { outerBullseyeDiff = 1000; }
+				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
+				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 1000; }
 
 
 				if (currentPlayer->getScore() > 110)	//Cannot get to checkout point
@@ -148,7 +200,6 @@ int playGame501(char playerFirst)
 				{
 					currentPlayer->throwDart({ 20,3 });	//Aim to get score down faster
 				}
-				std::cout << "Second throw\n";
 			}
 			
 			int playerScore = currentPlayer->getScore();
@@ -178,7 +229,6 @@ int playGame501(char playerFirst)
 				{
 					currentPlayer->throwDart({ 14,1 });	//Middle score, reducing score, but not 
 				}
-				std::cout << "Third throw\n";
 			}
 			
 		}
@@ -198,8 +248,35 @@ int playGame301(char playerFirst)
 {
 	Dartboard301 board{ 50 };
 
-	Player301 Joe{ "Joe", 0.71f,0.8f,startingScore,&board };
-	Player301 Sid{ "Sid",0.73f,0.8f,startingScore,&board };
+	float bAccJoe = .71f;
+	float bAccSid = .73f;
+	float nAccJoe = .8f;
+	float nAccSid = .8f;
+
+	int custom;
+
+	std::cout << "Do you want to use custom accuracy (1 for yes, 0 for no): ";
+	std::cin >> custom;
+
+	if (custom)	//Get all the probablilities
+	{
+		std::cout << "All probabilities are measured 0-1\n";
+
+		std::cout << "What will be Joe's bullseye accuracy: ";
+		std::cin >> bAccJoe;
+
+		std::cout << "What will be Sid's bullseye accuracy: ";
+		std::cin >> bAccSid;
+
+		std::cout << "What will be Joe's sector accuracy: ";
+		std::cin >> nAccJoe;
+
+		std::cout << "What will be Sid's sector accuracy: ";
+		std::cin >> nAccSid;
+	}
+
+	Player301 Joe{ "Joe", bAccJoe,nAccJoe,startingScore,&board };
+	Player301 Sid{ "Sid", bAccSid,nAccSid,startingScore,&board };
 
 	Player301* playerOrder[2];
 	int turnsEach[2]{};
