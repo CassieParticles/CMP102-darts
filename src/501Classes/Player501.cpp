@@ -1,9 +1,9 @@
 #include "Player501.h"
 
 //Delightful initialiser list
-Player501::Player501(std::string name, float bullseyeChance, float normalHitChance,float singleHitChance, float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* dartBoard)
+Player501::Player501(std::string name, float bullseyeChance, float normalHitChance,float singleHitChance, float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* dartBoard, std::mt19937* rand)
 	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance }, singleHitChance{ singleHitChance }, doubleHitChance{ doubleHitChance }, tripleHitChance{ tripleHitChance },
-	startingScore{startingScore}, currentScore{startingScore}, oldScore{startingScore}, bullseyeCount{0}, rand{static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count())}, dartBoard{dartBoard}
+	startingScore{startingScore}, currentScore{startingScore}, oldScore{startingScore}, bullseyeCount{0}, rand{rand}, dartBoard{dartBoard}
 {
 
 }
@@ -35,12 +35,12 @@ int Player501::throwDart(Target target)
 				Use random to modify the Target parameter passed in, then use new Hit function, that can also hit the new target
 				Return new score
 	*/
-	float sectorAim= static_cast<float>(rand()) / rand.max();
+	float sectorAim= static_cast<float>((*rand)()) / rand->max();
 	if (target.sector == dartBoard->getInnerBullseye() || target.sector==dartBoard->getOuterBullseye())	//Handle if they are aiming for the bullseye
 	{
 		if (sectorAim > bullseyeChance)	//Player missed
 		{
-			target.sector = rand() % 20 + 1;
+			target.sector = (*rand)() % 20 + 1;
 		}
 		target.mult = 1;
 		return hit(target);
@@ -59,12 +59,12 @@ int Player501::throwDart(Target target)
 	//Player hitting a different sector, basically same as 301
 	if (sectorAim > normalHitChance)	//Hits to left or right
 	{
-		int change = rand() % 2;
+		int change = (*rand)() % 2;
 		if (change == 0) { change = -1; }
 		target.sector = dartBoard->getValue(dartBoard->getIndex(target.sector) + change);	//Get value to the left or right of the current sector
 	}
 
-	float multAim = static_cast<float>(rand()) / rand.max();
+	float multAim = static_cast<float>((*rand)()) / rand->max();
 
 
 	switch (target.mult)
@@ -72,7 +72,7 @@ int Player501::throwDart(Target target)
 	case 1:
 		if (multAim > singleHitChance)	//They miss the single they were aiming for
 		{
-			target.mult = rand() % 2 + 2;	//Generate random number (either 2 or 3)
+			target.mult = (*rand)() % 2 + 2;	//Generate random number (either 2 or 3)
 		}
 		return hit(target);
 	case 2:

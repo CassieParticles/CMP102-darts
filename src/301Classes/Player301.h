@@ -15,13 +15,13 @@ private:
 	int score;
 	int bullseyeCount;
 
-	std::mt19937 rand;	//Mersenne twister, for random number generation
+	std::mt19937* rand;	//Mersenne twister, for random number generation
 
 	Dartboard301* dartBoard;	//The dartboard players are throwing at
 
 	int hit(int target);	//Function for hitting a specific number, includes checks for going below 50
 public:
-	Player301(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard301* board);
+	Player301(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard301* board, std::mt19937* rand);
 	~Player301();
 	bool throwDart(int target);
 

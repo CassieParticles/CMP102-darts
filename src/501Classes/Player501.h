@@ -15,7 +15,7 @@ public:
 		int mult;
 	};
 
-	Player501(std::string name, float bullseyeChance, float normalHitChance, float singleHitChance,float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* board);
+	Player501(std::string name, float bullseyeChance, float normalHitChance, float singleHitChance,float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* board, std::mt19937* rand);
 	~Player501();
 	int throwDart(Target target);
 
@@ -41,7 +41,7 @@ private:
 	int currentScore;
 	int oldScore;
 
-	std::mt19937 rand;	//Mersenne twister, for random number generation
+	std::mt19937* rand;	//Mersenne twister, for random number generation
 
 	Dartboard501* dartBoard;	//The dartboard players are throwing at
 

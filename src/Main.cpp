@@ -214,7 +214,7 @@ int main()
 		Swap turns until someone wins
 	*/
 
-	int gameType;	//Get whatt ype of game is played
+	int gameType;	//Get what type of game is played
 	do
 	{
 		std::cout << "What type of game: ";
@@ -291,11 +291,14 @@ int main()
 		}
 	}
 
-	Player301 Joe301{ "Joe", bAccJoe,nAccJoe,startingScore,&board301 };
-	Player301 Sid301{ "Sid", bAccSid,nAccSid,startingScore,&board301 };
+	//Mersenne twister random object is large, so creating one in main and giving pointers to players is probably better
+	std::mt19937 rand{ static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()) };	
 
-	Player501 Joe501{ "Joe", bAccJoe, nAccJoe, sAccJoe, dAccJoe, tAccJoe, 501, &board501 };
-	Player501 Sid501{ "Sid", bAccSid, nAccSid, sAccSid, dAccSid, tAccSid, 501, &board501 };
+	Player301 Joe301{ "Joe", bAccJoe,nAccJoe,startingScore,&board301,&rand };
+	Player301 Sid301{ "Sid", bAccSid,nAccSid,startingScore,&board301,&rand };
+
+	Player501 Joe501{ "Joe", bAccJoe, nAccJoe, sAccJoe, dAccJoe, tAccJoe, 501, &board501,&rand };
+	Player501 Sid501{ "Sid", bAccSid, nAccSid, sAccSid, dAccSid, tAccSid, 501, &board501,&rand };
 
 	Player301* playerOrder301[2];
 	Player501* playerOrder501[2];
@@ -314,6 +317,8 @@ int main()
 		playerOrder501[0] = &Joe501;
 		playerOrder501[1] = &Sid501;
 	}
+
+	std::cout<<sizeof(Joe501)<<'\n';
 
 	if (gameType == 301)
 	{
