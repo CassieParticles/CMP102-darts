@@ -2,7 +2,7 @@
 
 //Beautiful initialiser list
 Player301::Player301(std::string name, float bullseyeChance, float normalHitChance, int startingScore, Dartboard301* dartBoard, std::mt19937* rand)
-	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance }, score{ startingScore }, bullseyeCount{ 0 },
+	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance },startingScore{startingScore}, score{startingScore}, bullseyeCount{0},
 	rand{rand}, dartBoard{ dartBoard }
 {
 
@@ -27,6 +27,11 @@ int Player301::hit(int target)	//Handles the player hitting a specific target, d
 		return score;
 	}	
 	return score -= target;
+}
+
+void Player301::startNewGame()
+{
+	score = startingScore;
 }
 
 bool Player301::throwDart(int target)

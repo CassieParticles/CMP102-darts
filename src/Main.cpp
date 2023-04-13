@@ -12,7 +12,7 @@ constexpr int startingScore = 301;
 
 int wins[2]{};
 
-int playGame501(Player501** playerOrder, Dartboard501* board)
+int playGame501(Player501** playerOrder, Dartboard501* board, int* playerTurns)	//Returns 0 is player 0 won, returns 1 is player 1 won
 {
 	/*
 	Alternate between each player
@@ -57,8 +57,8 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		Player501* currentPlayer = playerOrder[cPlayerIndex];
 
 		//First throw======================================================================================================================
-		int innerBullseyeDiff = currentPlayer->getScore() - (board->getInnerBullseye() + 20);
-		int outerBullseyeDiff = currentPlayer->getScore() - (board->getOuterBullseye() + 20);
+		int innerBullseyeDiff = currentPlayer->getScore() - (board->getInnerBullseye() );
+		int outerBullseyeDiff = currentPlayer->getScore() - (board->getOuterBullseye() );
 
 		if (innerBullseyeDiff < 1) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
 		if (outerBullseyeDiff < 1) { outerBullseyeDiff = 1000; }
@@ -68,7 +68,7 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		{
 			currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
 		}
-		else if (currentPlayer->getScore() < 10)
+		else if (currentPlayer->getScore() < 25)
 		{
 			currentPlayer->throwDart({ 1,1 });
 		}
@@ -91,7 +91,7 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 
 		//Check the bullseye
 		innerBullseyeDiff = currentPlayer->getScore() - board->getInnerBullseye();
-		 outerBullseyeDiff = currentPlayer->getScore() - board->getOuterBullseye();
+		outerBullseyeDiff = currentPlayer->getScore() - board->getOuterBullseye();
 
 		if (innerBullseyeDiff < 0) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
 		if (outerBullseyeDiff < 0) { outerBullseyeDiff = 1000; }
@@ -123,9 +123,13 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		else if (outerBullseyeDiff < 60 && outerBullseyeDiff % 3 == 0) { currentPlayer->throwDart({ outerBullseyeDiff / 3,3 }); }
 
 		//Player cannot checkout with a bullseye, try for double
-		else if (currentPlayer->getScore() < 40)	//Player already in "double" range, try to keep value even
+		else if (currentPlayer->getScore() < 40 && currentPlayer->getScore() % 2 == 0)	//Player score is already in double range, and even
 		{
-			currentPlayer->throwDart({ 6,2 });	//Low score, has even neighbor, and aiming for double means chance odd neighbor will be even anyway
+			currentPlayer->throwDart({ 2,1 });	//Aim low as possible, but even
+		}
+		else if (currentPlayer->getScore() < 40 && currentPlayer->getScore() % 2 == 1)	//Player score is already in double range, and odd
+		{
+			currentPlayer->throwDart({ 1,1 });	//Low score, has even neighbor, and aiming for double means chance odd neighbor will be even anyway
 		}
 		else//Any time the player could get to the "double" range, they would've been able to get to the bullseye range
 		{
@@ -138,10 +142,6 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		{
 			currentPlayer->throwDart({ 20,3 });	//Aim for the highest score (triple 20)
 		}
-		else if (currentPlayer->getScore() < 10)	//prevent score from going below 10
-		{
-			currentPlayer->throwDart({ 14,1 });	//Ensures score is reset
-		}
 		else if (currentPlayer->getScore() == 50 || currentPlayer->getScore() == 25)	//Checkout by bullseye
 		{
 			currentPlayer->throwDart({ currentPlayer->getScore(),1 });
@@ -150,6 +150,10 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		{
 			currentPlayer->throwDart({ currentPlayer->getScore() / 2, 2 });
 		}//Cannot checkout if at this point
+		else if (currentPlayer->getScore() < 10)	//prevent score from going below 10
+		{
+			currentPlayer->throwDart({ 14,1 });	//Ensures score is reset
+		}
 		else if (currentPlayer->getScore() < 20)
 		{
 			currentPlayer->throwDart({ 20,1 });	//Keep player score higher, to reduce chance of getting stuck
@@ -164,18 +168,21 @@ int playGame501(Player501** playerOrder, Dartboard501* board)
 		}
 
 		bool playerWon=currentPlayer->endTurn();	//Once 3 darts are thrown, end turn, 
-		cPlayerIndex = 1 - cPlayerIndex;
+		
+		
 		if (playerWon)
 		{
-			std::cout << "Player " << currentPlayer->getName() << " has won!";
-			break;
+			//std::cout << "Player " << currentPlayer->getName() << " has won!";
+			return cPlayerIndex;
 		}
-		std::cout << "Player " << currentPlayer->getName() << " ended turn with score " << currentPlayer->getScore()<<"\n\n";
+		
+		playerTurns[cPlayerIndex]++;
+		cPlayerIndex = 1 - cPlayerIndex;
+		//std::cout << "Player " << currentPlayer->getName() << " ended turn with score " << currentPlayer->getScore()<<"\n\n";
 	}
-	return 0;
 }
 
-int playGame301(Player301** playerOrder, Dartboard301* board)
+int playGame301(Player301** playerOrder, Dartboard301* board, int* playerTurns)
 {
 	int turnsEach[2]{};
 
@@ -192,10 +199,10 @@ int playGame301(Player301** playerOrder, Dartboard301* board)
 		{
 			//std::cout << playerOrder[currentTurn]->getName() << " has won in " << turnsEach[currentTurn] << '\n';
 			wins[currentTurn]++;
-			return turnsEach[currentTurn];
+			return currentTurn;
 		}
 
-		turnsEach[currentTurn]++;
+		playerTurns[currentTurn]++;
 		currentTurn = 1 - currentTurn;	//Flip it between 0 and 1
 	}
 }
@@ -213,6 +220,8 @@ int main()
 			-Else, aim at whatever score the player needs to get to 50
 		Swap turns until someone wins
 	*/
+
+	constexpr int numberOfGames{ 10000 };
 
 	int gameType;	//Get what type of game is played
 	do
@@ -320,12 +329,26 @@ int main()
 
 	std::cout<<sizeof(Joe501)<<'\n';
 
-	if (gameType == 301)
+	int numberOfWins[2]{};
+
+	for (int i = 0; i < numberOfGames; i++)
 	{
-		playGame301(playerOrder301,&board301);
+		int numberOfTurns[2]{};
+		if (gameType == 301)
+		{
+			numberOfWins[playGame301(playerOrder301,&board301,numberOfTurns)]++;
+			playerOrder301[0]->startNewGame();
+			playerOrder301[1]->startNewGame();
+		}
+		else
+		{
+			numberOfWins[playGame501(playerOrder501, &board501,numberOfTurns)]++;
+			playerOrder501[0]->startNewGame();
+			playerOrder501[1]->startNewGame();
+		}
 	}
-	else
-	{
-		playGame501(playerOrder501, &board501);
-	}
+
+	std::cout << "Player " << playerOrder301[0]->getName() << " won a total of " << numberOfWins[0] << " times!\n";
+	std::cout << "Player " << playerOrder301[1]->getName() << " won a total of " << numberOfWins[1] << " times!\n";
+	
 }

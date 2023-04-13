@@ -15,7 +15,7 @@ Player501::~Player501()
 
 int Player501::hit(Target target)	//Handles the player hitting a specific target, deals with score going below 50
 {
-	std::cout << "Player " << name << " hit " << target.sector << " with a multiplier of " << target.mult << '\n';
+	//std::cout << "Player " << name << " hit " << target.sector << " with a multiplier of " << target.mult << '\n';
 	currentScore -= target.sector * target.mult;
 	return currentScore;
 }
@@ -48,7 +48,7 @@ int Player501::throwDart(Target target)
 	//Target is 1-20
 	if (target.sector == 0)
 	{
-		std::cout << "Player " << name << " dropped their dart to score 0, smart move!\n";
+		//std::cout << "Player " << name << " dropped their dart to score 0, smart move!\n";
 		return currentScore;
 	}
 	if (target.sector < 0 || target.sector>20) 
@@ -101,7 +101,7 @@ bool Player501::endTurn()
 	}
 	if (currentScore < 4)	//Any score below 4 is either softlocked, or already invalid
 	{
-		std::cout << "Score is invalid, reverting to " << oldScore<<'\n';
+		//std::cout << "Score is invalid, reverting to " << oldScore<<'\n';
 		currentScore = oldScore;
 	}
 	else					//Set the oldScore to this one, keeping progress
