@@ -12,7 +12,7 @@ constexpr int startingScore = 301;
 
 int wins[2]{};
 
-int playGame501(char playerFirst)
+int playGame501(Player501** playerOrder, Dartboard501* board)
 {
 	/*
 	Alternate between each player
@@ -47,78 +47,9 @@ int playGame501(char playerFirst)
 	Avoid ending up below 10, if they are below 10 on their final dart, aim high to discount set
 		Aiming for single 14 is best, all neighbors are 9 or more, so guarenteed to revert
 	*/
-	Dartboard501 board{ 50,25 };
-
-	float bAccJoe = .71f;
-	float bAccSid = .73f;
-	float nAccJoe = .8f;
-	float nAccSid = .8f;
-	float sAccJoe = .9f;
-	float sAccSid = .93f;
-	float dAccJoe = .4f;
-	float dAccSid = 0.41f;
-	float tAccJoe = .3f;
-	float tAccSid = .31f;
-
-	int custom;
-
-	std::cout << "Do you want to use custom accuracy (1 for yes, 0 for no): ";
-	std::cin >> custom;
-
-	if (custom)	//Get all the probablilities
-	{
-		std::cout << "All probabilities are measured 0-1\n";
-
-		std::cout << "What will be Joe's bullseye accuracy: ";
-		std::cin >> bAccJoe;
-
-		std::cout << "What will be Sid's bullseye accuracy: ";
-		std::cin >> bAccSid;
-
-		std::cout << "What will be Joe's sector accuracy: ";
-		std::cin >> nAccJoe;
-		
-		std::cout << "What will be Sid's sector accuracy: ";
-		std::cin >> nAccSid;
-
-		std::cout << "What will be Joe's single accuracy: ";
-		std::cin >> sAccJoe;
-
-		std::cout << "What will be Sid's single accuracy: ";
-		std::cin >> sAccSid;
-
-		std::cout << "What will be Joe's double accuracy: ";
-		std::cin >> dAccJoe;
-
-		std::cout << "What will be Sid's double accuracy: ";
-		std::cin >> dAccSid;
-
-		std::cout << "What will be Joe's triple accuracy: ";
-		std::cin >> tAccJoe;
-
-		std::cout << "What will be Sid's triple accuracy: ";
-		std::cin >> tAccSid;
-	}
-
 	
 
-	Player501 Joe{ "Joe", bAccJoe, nAccJoe, sAccJoe, dAccJoe, tAccJoe, 501, &board };
-	Player501 Sid{ "Sid", bAccSid, nAccSid, sAccSid, dAccSid, tAccSid, 501, &board };
-
-	Player501* playerOrder[2];	//Same setting up player order as before
 	int cPlayerIndex = 0;
-
-	if (playerFirst == 'S')
-	{
-		playerOrder[0] = &Sid;
-		playerOrder[1] = &Joe;
-	}
-	else
-	{
-		playerOrder[0] = &Joe;
-		playerOrder[1] = &Sid;
-	}
-
 	bool playerWon = false;
 
 	while(true)	//Will run until break is called, break is called when someone wins
@@ -133,8 +64,8 @@ int playGame501(char playerFirst)
 			}
 			if (i == 0)	//1st dart, aim to get within single range of bull, if not, just aim hight
 			{
-				int innerBullseyeDiff = currentPlayer->getScore() - (board.getInnerBullseye()+20);
-				int outerBullseyeDiff = currentPlayer->getScore() - (board.getOuterBullseye()+20);
+				int innerBullseyeDiff = currentPlayer->getScore() - (board->getInnerBullseye()+20);
+				int outerBullseyeDiff = currentPlayer->getScore() - (board->getOuterBullseye()+20);
 
 				if (innerBullseyeDiff < 1) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
 				if (outerBullseyeDiff < 1) { outerBullseyeDiff = 1000; }
@@ -162,8 +93,8 @@ int playGame501(char playerFirst)
 			{
 
 				//Check the bullseye
-				int innerBullseyeDiff = currentPlayer->getScore() - board.getInnerBullseye();
-				int outerBullseyeDiff = currentPlayer->getScore() - board.getOuterBullseye();
+				int innerBullseyeDiff = currentPlayer->getScore() - board->getInnerBullseye();
+				int outerBullseyeDiff = currentPlayer->getScore() - board->getOuterBullseye();
 
 				if (innerBullseyeDiff < 0) { innerBullseyeDiff = 1000; }	//If player score is less then bullseye, make the bullseye very undesirable
 				if (outerBullseyeDiff < 0) { outerBullseyeDiff = 1000; }
@@ -176,13 +107,13 @@ int playGame501(char playerFirst)
 				else if (innerBullseyeDiff < 20) { currentPlayer->throwDart({ innerBullseyeDiff,1 }); }	//If player can get to checkout with single, do so
 				else if (outerBullseyeDiff < 20) { currentPlayer->throwDart({ outerBullseyeDiff,1 }); }
 
-				else if (innerBullseyeDiff == board.getInnerBullseye() || outerBullseyeDiff == board.getInnerBullseye())	//Inner bullseye will lead to bullseye checkout
+				else if (innerBullseyeDiff == board->getInnerBullseye() || outerBullseyeDiff == board->getInnerBullseye())	//Inner bullseye will lead to bullseye checkout
 				{
-					currentPlayer->throwDart({ board.getInnerBullseye(),1 });
+					currentPlayer->throwDart({ board->getInnerBullseye(),1 });
 				}
-				else if (innerBullseyeDiff == board.getOuterBullseye() || outerBullseyeDiff == board.getOuterBullseye())	//Outer bullseye will lead to bullseye checkout
+				else if (innerBullseyeDiff == board->getOuterBullseye() || outerBullseyeDiff == board->getOuterBullseye())	//Outer bullseye will lead to bullseye checkout
 				{
-					currentPlayer->throwDart({ board.getOuterBullseye(),1 });
+					currentPlayer->throwDart({ board->getOuterBullseye(),1 });
 				}
 
 				else if (innerBullseyeDiff < 40 && innerBullseyeDiff % 2 == 0) { currentPlayer->throwDart({ innerBullseyeDiff /2,2}); }	//Double to get to bullseye checkout
@@ -244,60 +175,16 @@ int playGame501(char playerFirst)
 	return 0;
 }
 
-int playGame301(char playerFirst)
+int playGame301(Player301** playerOrder, Dartboard301* board)
 {
-	Dartboard301 board{ 50 };
-
-	float bAccJoe = .71f;
-	float bAccSid = .73f;
-	float nAccJoe = .8f;
-	float nAccSid = .8f;
-
-	int custom;
-
-	std::cout << "Do you want to use custom accuracy (1 for yes, 0 for no): ";
-	std::cin >> custom;
-
-	if (custom)	//Get all the probablilities
-	{
-		std::cout << "All probabilities are measured 0-1\n";
-
-		std::cout << "What will be Joe's bullseye accuracy: ";
-		std::cin >> bAccJoe;
-
-		std::cout << "What will be Sid's bullseye accuracy: ";
-		std::cin >> bAccSid;
-
-		std::cout << "What will be Joe's sector accuracy: ";
-		std::cin >> nAccJoe;
-
-		std::cout << "What will be Sid's sector accuracy: ";
-		std::cin >> nAccSid;
-	}
-
-	Player301 Joe{ "Joe", bAccJoe,nAccJoe,startingScore,&board };
-	Player301 Sid{ "Sid", bAccSid,nAccSid,startingScore,&board };
-
-	Player301* playerOrder[2];
 	int turnsEach[2]{};
-
-	if (playerFirst == 'S')
-	{
-		playerOrder[0] = &Sid;
-		playerOrder[1] = &Joe;
-	}
-	else
-	{
-		playerOrder[0] = &Joe;
-		playerOrder[1] = &Sid;
-	}
 
 	int currentTurn = 0;
 
 	while (playerOrder[0]->getScore() != 0 && playerOrder[1]->getScore() != 0)	//Until someone wins
 	{
-		int amountToReduce = playerOrder[currentTurn]->getScore() - board.getBullseyeValue();	//Get how much the player has to score
-		if (amountToReduce > board.getBullseyeValue() || amountToReduce == 0) { playerOrder[currentTurn]->throwDart(board.getBullseyeValue()); }
+		int amountToReduce = playerOrder[currentTurn]->getScore() - board->getBullseyeValue();	//Get how much the player has to score
+		if (amountToReduce > board->getBullseyeValue() || amountToReduce == 0) { playerOrder[currentTurn]->throwDart(board->getBullseyeValue()); }
 		else if (amountToReduce > 20) { playerOrder[currentTurn]->throwDart(20); }
 		else { playerOrder[currentTurn]->throwDart(amountToReduce); }
 
@@ -326,6 +213,14 @@ int main()
 			-Else, aim at whatever score the player needs to get to 50
 		Swap turns until someone wins
 	*/
+
+	int gameType;	//Get whatt ype of game is played
+	do
+	{
+		std::cout << "What type of game: ";
+		std::cin >> gameType;
+	} while (gameType != 301 && gameType != 501);
+
 	char playerFirst;//Get which player should throw first
 	do
 	{
@@ -333,19 +228,99 @@ int main()
 		std::cin >> playerFirst;
 	} while (playerFirst!='S'&&playerFirst!='J');
 
+	char custom;//Get whether the players shoudl use custom accuracies
+	do
+	{
+		std::cout << "Should the players use custom accuracies (Y/N): ";
+		std::cin >> custom;
+	} while (custom != 'Y' && custom != 'N');
+
 	int sumTurns{};
 	int games{};
 
-	//constexpr int sampleSize = 100000;
+	Dartboard301 board301{ 50 };
+	Dartboard501 board501{ 25,50 };
 
-	//for (games;games < sampleSize; games++)
-	//{
-	//	sumTurns += playGame301(playerFirst);
-	//}
-	//std::cout << "Mean number of turns in a game: " << sumTurns / games<<'\n';	//Get mean number of turns per game
-	//std::cout << "First player won " << wins[0] << " times!" << '\n';
-	//std::cout << "Second player won " << wins[1] << " times!" << '\n';
+	float bAccJoe = .71f;	//301 & 501
+	float bAccSid = .73f;
+	float nAccJoe = .8f;
+	float nAccSid = .8f;
 
-	playGame501(playerFirst);
-	
+	float sAccJoe = .9f;	//501 exclusive
+	float sAccSid = .93f;
+	float dAccJoe = .4f;
+	float dAccSid = 0.41f;
+	float tAccJoe = .3f;
+	float tAccSid = .31f;
+
+	if (custom == 'Y')
+	{
+		std::cout << "All probabilities are measured 0-1\n";
+
+		std::cout << "What will be Joe's bullseye accuracy: ";
+		std::cin >> bAccJoe;
+
+		std::cout << "What will be Sid's bullseye accuracy: ";
+		std::cin >> bAccSid;
+
+		std::cout << "What will be Joe's sector accuracy: ";
+		std::cin >> nAccJoe;
+
+		std::cout << "What will be Sid's sector accuracy: ";
+		std::cin >> nAccSid;
+
+		if (gameType == 501)	//501 specific
+		{
+			std::cout << "What will be Joe's single accuracy: ";
+			std::cin >> sAccJoe;
+
+			std::cout << "What will be Sid's single accuracy: ";
+			std::cin >> sAccSid;
+
+			std::cout << "What will be Joe's double accuracy: ";
+			std::cin >> dAccJoe;
+
+			std::cout << "What will be Sid's double accuracy: ";
+			std::cin >> dAccSid;
+
+			std::cout << "What will be Joe's triple accuracy: ";
+			std::cin >> tAccJoe;
+
+			std::cout << "What will be Sid's triple accuracy: ";
+			std::cin >> tAccSid;
+		}
+	}
+
+	Player301 Joe301{ "Joe", bAccJoe,nAccJoe,startingScore,&board301 };
+	Player301 Sid301{ "Sid", bAccSid,nAccSid,startingScore,&board301 };
+
+	Player501 Joe501{ "Joe", bAccJoe, nAccJoe, sAccJoe, dAccJoe, tAccJoe, 501, &board501 };
+	Player501 Sid501{ "Sid", bAccSid, nAccSid, sAccSid, dAccSid, tAccSid, 501, &board501 };
+
+	Player301* playerOrder301[2];
+	Player501* playerOrder501[2];
+
+	if (playerFirst == 'S')
+	{
+		playerOrder301[0] = &Sid301;
+		playerOrder301[1] = &Joe301;
+		playerOrder501[0] = &Sid501;
+		playerOrder501[1] = &Joe501;
+	}
+	else
+	{
+		playerOrder301[0] = &Joe301;
+		playerOrder301[1] = &Sid301;
+		playerOrder501[0] = &Joe501;
+		playerOrder501[1] = &Sid501;
+	}
+
+	if (gameType == 301)
+	{
+		playGame301(playerOrder301,&board301);
+	}
+	else
+	{
+		playGame501(playerOrder501, &board501);
+	}
 }

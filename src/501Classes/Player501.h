@@ -23,6 +23,8 @@ public:
 	const std::string& getName() { return name; }
 
 	bool endTurn();		//Run at the end of someone's 3 throws, checks if their score is valid, returns if they've won
+
+	void startNewGame();
 private:
 	std::string name;
 
@@ -35,6 +37,7 @@ private:
 
 	int bullseyeCount;
 
+	int startingScore;
 	int currentScore;
 	int oldScore;
 

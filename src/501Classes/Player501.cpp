@@ -3,7 +3,7 @@
 //Delightful initialiser list
 Player501::Player501(std::string name, float bullseyeChance, float normalHitChance,float singleHitChance, float doubleHitChance, float tripleHitChance, int startingScore, Dartboard501* dartBoard)
 	:name{ name }, bullseyeChance{ bullseyeChance }, normalHitChance{ normalHitChance }, singleHitChance{ singleHitChance }, doubleHitChance{ doubleHitChance }, tripleHitChance{ tripleHitChance },
-	currentScore{startingScore}, oldScore{startingScore}, bullseyeCount{0},	rand{ static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count()) }, dartBoard{dartBoard}	
+	startingScore{startingScore}, currentScore{startingScore}, oldScore{startingScore}, bullseyeCount{0}, rand{static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count())}, dartBoard{dartBoard}
 {
 
 }
@@ -110,4 +110,10 @@ bool Player501::endTurn()
 	}
 
 	return false;
+}
+
+void Player501::startNewGame()
+{
+	currentScore = startingScore;
+	oldScore = startingScore;
 }
