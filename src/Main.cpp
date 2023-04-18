@@ -327,9 +327,13 @@ int main()
 		playerOrder501[1] = &Sid501;
 	}
 
-	std::cout<<sizeof(Joe501)<<'\n';
-
 	int numberOfWins[2]{};
+	int setOutcome501[14]{};	//First 7 are player1 winning, second 7 are player2 winning
+	/*
+		501 game is played in sets of 13, first player to reach 7 wins the set
+		14 possible outcomes
+			14 item long array to count each outcome
+	*/
 
 	for (int i = 0; i < numberOfGames; i++)
 	{
@@ -342,13 +346,44 @@ int main()
 		}
 		else
 		{
-			numberOfWins[playGame501(playerOrder501, &board501,numberOfTurns)]++;
-			playerOrder501[0]->startNewGame();
-			playerOrder501[1]->startNewGame();
+			int setWins[2]{};
+			for (int i = 0; i < 13; i++)
+			{
+				setWins[playGame501(playerOrder501, &board501, numberOfTurns)]++;
+
+				playerOrder501[0]->startNewGame();
+				playerOrder501[1]->startNewGame();
+				if (setWins[0] == 7 || setWins[1] == 7) { break; }	//If a player has won the set, break out
+			}
+			int setWinner;	//Get who won
+			if (setWins[0] == 7) { setWinner = 0; }
+			else { setWinner = 1; }
+
+			numberOfWins[setWinner]++;
+
+			//Get index of the outcome, if player[0] won, index is between 0-6, if player[1] won, index is between 7-13
+			//Specific index in range is the losing players score
+			int outcomeIndex = setWinner * 7 + setWins[1 - setWinner];	//Arithmetic to get index of which outcome, 
+			setOutcome501[outcomeIndex]++;
+
+
 		}
 	}
 
 	std::cout << "Player " << playerOrder301[0]->getName() << " won a total of " << numberOfWins[0] << " times!\n";
 	std::cout << "Player " << playerOrder301[1]->getName() << " won a total of " << numberOfWins[1] << " times!\n";
+
+	if (gameType == 501)	//Print out each set outcome
+	{
+		for (int i = 0; i < 14; i++)
+		{
+			int winner = i / 7;
+			int losingScore = i % 7;
+			int scores[2] = {};
+			scores[winner] = 7;
+			scores[1 - winner] = losingScore;
+			std::cout << "Score [" << scores[0] << "|" << scores[1] << "] happened " << setOutcome501[i] << " times!\n";
+		}
+	}
 	
 }
