@@ -48,4 +48,3 @@ private:
 	int hit(Target target);	//Function for hitting a specific number, includes checks for going below 50
 	
 };
-

@@ -24,7 +24,7 @@ int playGame501(Player501** playerOrder, Dartboard501* board, int* playerTurns)	
 			new Throw function takes in a Target argument, uses rng to randomise if they hit, and if they hit the double/treble
 				Use prior random calcualtion for if they hit left or right of target
 				Use second random number generated for if they hit the single/double/treble
-					If they aimed for single, use hingle hit chance to determine if they do (very hgih chance of succes)
+					If they aimed for single, use single hit chance to determine if they do (very high chance of succes)
 						If they don't pick double or treble randomly (equal chance)
 					If they aimed for double/treble, use respective chances to determine if they do (lower chance of success)
 						If they don't, they hit single (double and treble are too far away to accidentally hit the other)
@@ -244,9 +244,6 @@ int main()
 		std::cin >> custom;
 	} while (custom != 'Y' && custom != 'N');
 
-	int sumTurns{};
-	int games{};
-
 	Dartboard301 board301{ 50 };
 	Dartboard501 board501{ 25,50 };
 
@@ -326,7 +323,7 @@ int main()
 		playerOrder501[0] = &Joe501;
 		playerOrder501[1] = &Sid501;
 	}
-
+	int sumTurns[2]{};
 	int numberOfWins[2]{};
 	int setOutcome501[14]{};	//First 7 are player1 winning, second 7 are player2 winning
 	/*
@@ -340,7 +337,9 @@ int main()
 		int numberOfTurns[2]{};
 		if (gameType == 301)
 		{
-			numberOfWins[playGame301(playerOrder301,&board301,numberOfTurns)]++;
+			int winner= playGame301(playerOrder301, &board301, numberOfTurns);
+			numberOfWins[winner]++;
+			sumTurns[winner] += numberOfTurns[winner];
 			playerOrder301[0]->startNewGame();
 			playerOrder301[1]->startNewGame();
 		}
@@ -349,17 +348,21 @@ int main()
 			int setWins[2]{};
 			for (int i = 0; i < 13; i++)
 			{
-				setWins[playGame501(playerOrder501, &board501, numberOfTurns)]++;
+				int winner = playGame501(playerOrder501, &board501, numberOfTurns);
+				setWins[winner]++;
 
 				playerOrder501[0]->startNewGame();
 				playerOrder501[1]->startNewGame();
 				if (setWins[0] == 7 || setWins[1] == 7) { break; }	//If a player has won the set, break out
+
 			}
+
 			int setWinner;	//Get who won
 			if (setWins[0] == 7) { setWinner = 0; }
 			else { setWinner = 1; }
 
 			numberOfWins[setWinner]++;
+			sumTurns[setWinner] += numberOfTurns[setWinner];
 
 			//Get index of the outcome, if player[0] won, index is between 0-6, if player[1] won, index is between 7-13
 			//Specific index in range is the losing players score
@@ -371,7 +374,10 @@ int main()
 	}
 
 	std::cout << "Player " << playerOrder301[0]->getName() << " won " << 100 * static_cast<float>(numberOfWins[0])/numberOfGames << "% of the time!\n";
-	std::cout << "Player " << playerOrder301[1]->getName() << " won a total of " << 100 * static_cast<float>(numberOfWins[1]) / numberOfGames << "% of the time!\n";
+	std::cout << "Player " << playerOrder301[1]->getName() << " won " << 100 * static_cast<float>(numberOfWins[1]) / numberOfGames << "% of the time!\n";
+
+	std::cout << "Player " << playerOrder301[0]->getName() << " took an average of " << static_cast<float>(sumTurns[0]) / (numberOfWins[0] * 7) << " turns per win!\n";
+	std::cout << "Player " << playerOrder301[1]->getName() << " took an average of " << static_cast<float>(sumTurns[1]) / (numberOfWins[1] * 7) << " turns per win!\n";
 
 	if (gameType == 501)	//Print out each set outcome
 	{
