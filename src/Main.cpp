@@ -370,8 +370,8 @@ int main()
 		}
 	}
 
-	std::cout << "Player " << playerOrder301[0]->getName() << " won a total of " << numberOfWins[0] << " times!\n";
-	std::cout << "Player " << playerOrder301[1]->getName() << " won a total of " << numberOfWins[1] << " times!\n";
+	std::cout << "Player " << playerOrder301[0]->getName() << " won " << 100 * static_cast<float>(numberOfWins[0])/numberOfGames << "% of the time!\n";
+	std::cout << "Player " << playerOrder301[1]->getName() << " won a total of " << 100 * static_cast<float>(numberOfWins[1]) / numberOfGames << "% of the time!\n";
 
 	if (gameType == 501)	//Print out each set outcome
 	{
@@ -382,7 +382,7 @@ int main()
 			int scores[2] = {};
 			scores[winner] = 7;
 			scores[1 - winner] = losingScore;
-			std::cout << "Score [" << scores[0] << "|" << scores[1] << "] happened " << setOutcome501[i] << " times!\n";
+			std::cout << "Score [" << scores[0] << "|" << scores[1] << "] happened " << 100 * static_cast<float>(setOutcome501[i]) / numberOfGames << "% of the time!\n";
 		}
 	}
 	
